@@ -1,0 +1,6 @@
+/out
+*.py
+*.json
+*.cache
+*.vim
+
