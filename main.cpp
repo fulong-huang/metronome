@@ -1,7 +1,8 @@
 #include "metronome.h"
 
 int main(){
-    doSomething();
+    Metronome m;
+    m.play();
     return 0;
 }
 
