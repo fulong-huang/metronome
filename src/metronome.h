@@ -3,6 +3,7 @@
 #include <string>
 #include <SFML/Audio.hpp>
 #include <chrono>
+#include <thread>
 
 const unsigned SAMPLES = 44100;
 const unsigned SAMPLE_RATE = 44100;
@@ -18,6 +19,10 @@ class Metronome{
     int beatsPerMeasure;
     sf::SoundBuffer downbeatBuffer, upbeatBuffer;
 
+    bool playing;
+    std::thread t;
+    void play();
+
 public:
     Metronome(
                 int beatsPerMeasure = 4,
@@ -26,7 +31,12 @@ public:
                 int upbeatPitch     = 440
             );
 
-    void play();
+    void start();
+    void stop();
+
+    void setTempo(int tempo);
+    void setBeatsPerMeasure(int beats);
+
 
 };
 

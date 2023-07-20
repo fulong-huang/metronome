@@ -33,42 +33,52 @@ Metronome::Metronome(int beatsPerMeasure,
 
     this->tempo = tempo;
     this->beatsPerMeasure = beatsPerMeasure;
+
+    this->playing = true;
     std::cout << "INIT" << std::endl;
 }
 
+int math__(){
+    return 1;
+}
+
+void Metronome::start(){
+    this->t = std::thread(&Metronome::play, this);
+    this->t.detach();
+}
+
+void Metronome::stop(){
+    this->playing = false;
+    sf::sleep(sf::seconds(0.1));
+}
+
 void Metronome::play(){
-    int currBeat;
-    double timePerBeat = 60.f / this->tempo;
     auto start = std::chrono::high_resolution_clock::now();
     int idx = 0;
     sf::Sound sounds[] = {upbeatSound, downbeatSound};
-    while(true){
+    while(this->playing){
         auto curr = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> duration = curr - start;
         double seconds = duration.count();
+        double timePerBeat = 60.f / this->tempo;
         if(seconds >= timePerBeat){
             start = curr;
             sounds[idx == 0].play();
             sf::sleep(sf::seconds(0.1));
             sounds[idx == 0].stop();
-            std::cout << "Seconds: " << seconds << std::endl;
             idx++;
             idx = idx % beatsPerMeasure;
         }
-
-//
-//        this->downbeatSound.play();
-//        sf::sleep(sf::seconds(0.1));
-//        this->downbeatSound.stop();
-//        sf::sleep(sf::seconds(pauseTime));
-//        for(int i = 1; i < this->beatsPerMeasure; i++){
-//            this->upbeatSound.play();
-//            sf::sleep(sf::seconds(0.1));
-//            this->upbeatSound.stop();
-//            sf::sleep(sf::seconds(pauseTime));
-//        }
     }
+    this->playing = true;
 }
 
+
+void Metronome::setTempo(int tempo){
+    this->tempo = tempo;
+}
+void Metronome::setBeatsPerMeasure(int beats){
+    this->beatsPerMeasure = beats;
+}
 
 
