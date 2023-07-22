@@ -1,4 +1,3 @@
-#include "SFML/System/Sleep.hpp"
 #include "metronome.h"
 
 int main(){
@@ -7,6 +6,17 @@ int main(){
     std::string command;
     while(true){
         std::getline(std::cin, command);
+        if(command.compare("p") == 0){
+            if(m.isPlaying()){
+                std::cout << "Pause" << std::endl;
+                m.pause();
+            }
+            else{
+                std::cout << "Play" << std::endl;
+                m.start();
+            }
+            continue;
+        }
         if(command.size() <= 2){
             continue;
         }
@@ -23,7 +33,6 @@ int main(){
         }
     }
     m.stop();
-    sf::sleep(sf::seconds(0.1));
     return 0;
 }
 

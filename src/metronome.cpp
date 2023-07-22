@@ -34,7 +34,7 @@ Metronome::Metronome(int beatsPerMeasure,
     this->tempo = tempo;
     this->beatsPerMeasure = beatsPerMeasure;
 
-    this->playing = true;
+    this->playing = false;
     std::cout << "INIT" << std::endl;
 }
 
@@ -43,13 +43,21 @@ int math__(){
 }
 
 void Metronome::start(){
+    this->playing = true;
     this->t = std::thread(&Metronome::play, this);
     this->t.detach();
 }
 
 void Metronome::stop(){
     this->playing = false;
-    sf::sleep(sf::seconds(0.1));
+}
+
+void Metronome::pause(){
+    this->playing = false;
+}
+
+bool Metronome::isPlaying(){
+    return this->playing;
 }
 
 void Metronome::play(){
@@ -70,7 +78,6 @@ void Metronome::play(){
             idx = idx % beatsPerMeasure;
         }
     }
-    this->playing = true;
 }
 
 

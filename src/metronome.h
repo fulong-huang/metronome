@@ -33,6 +33,9 @@ public:
 
     void start();
     void stop();
+    void pause();
+
+    bool isPlaying();
 
     void setTempo(int tempo);
     void setBeatsPerMeasure(int beats);
