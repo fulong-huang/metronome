@@ -43,7 +43,11 @@ int math__(){
 }
 
 void Metronome::start(){
+    if(this->playing){
+        return;
+    }
     this->playing = true;
+    std::cout << "IS PLAYING: " << this->playing << std::endl;
     this->t = std::thread(&Metronome::play, this);
     this->t.detach();
 }
