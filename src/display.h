@@ -1,5 +1,6 @@
 #include "SFML/Graphics.hpp"
 #include "metronome.h"
+#include <unistd.h>
 
 class Display{
 public:

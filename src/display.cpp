@@ -23,6 +23,9 @@ void Display::runGame(){
         window.draw(shape);
         window.display();
     }
+	if(this->metronome.isPlaying()){
+		this->metronome.pause();
+	}
 }
 
 void Display::handleMouseClick(){

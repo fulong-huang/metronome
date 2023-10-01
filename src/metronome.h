@@ -8,7 +8,7 @@
 
 const unsigned SAMPLES = 44100;
 const unsigned SAMPLE_RATE = 44100;
-const unsigned AMPLITUDE = 30000;
+const unsigned AMPLITUDE = 30000 / 10.f;
 const double TWO_PI = 6.28318;
 
 int doSomething();
