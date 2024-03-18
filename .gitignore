@@ -4,3 +4,4 @@
 *.cache
 *.vim
 
+.DS_Store

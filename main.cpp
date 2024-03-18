@@ -1,42 +1,45 @@
 #include "display.h"
+#include "metronome.h"
 
 int main(){
 
     Display display;
-    display.runGame();
+	Metronome metronome;
+
+	sf::RenderWindow window;
+	window.create(sf::VideoMode(800, 600), "Metronome");
+
+	sf::Event event;
+	while(window.isOpen()){
+		while(window.pollEvent(event)){
+			if(event.type == sf::Event::Closed){
+				window.close();
+			}
+			else if(event.type == sf::Event::MouseButtonPressed){
+				sf::Vector2i mousePos = sf::Mouse::getPosition();
+				display.handleMouseClick(mousePos);
+				if(metronome.isPlaying()){
+					metronome.stop();
+				}
+				else{
+					metronome.start();
+				};
+			}
+		}
+
+		display.draw(window);
+	};
+
+	if (metronome.isPlaying()){
+		metronome.stop();
+	};
+	// while loop
+	// 		check mouse click
+	// 			metronome handle mouse click
+	// 			display object handle mouse click
+	// 		update display
+	//
     
-//    Metronome m;
-//    m.start();
-//    std::string command;
-//    while(true){
-//        std::getline(std::cin, command);
-//        if(command.compare("p") == 0){
-//            if(m.isPlaying()){
-//                std::cout << "Pause" << std::endl;
-//                m.pause();
-//            }
-//            else{
-//                std::cout << "Play" << std::endl;
-//                m.start();
-//            }
-//            continue;
-//        }
-//        if(command.size() <= 2){
-//            continue;
-//        }
-//        if(command.compare("exit") == 0){
-//            break;
-//        }
-//        char type = command[0];
-//        command = command.substr(2);
-//        if(type == 't'){
-//            m.setTempo(std::stoi(command));
-//        }
-//        else if(type == 'b'){
-//            m.setBeatsPerMeasure(std::stoi(command));
-//        }
-//    }
-//    m.stop();
     return 0;
 }
 

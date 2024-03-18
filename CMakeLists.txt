@@ -4,7 +4,7 @@ Project(Sound_Sheet)
 
 include(FetchContent)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(SFML_VERSION "2.6.0")
 set(FETCHCONTENT_QUIET FALSE)
@@ -24,12 +24,13 @@ endif()
 
 find_package(SFML ${SFML_VERSION} COMPONENTS system window graphics audio)
 
-include_directories(src)
+include_directories(include include/shapes src src/shapes)
 
 add_executable(${PROJECT_NAME}
     main.cpp
     src/metronome.cpp
     src/display.cpp
+	src/shapes/circle.cpp
     )
 
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system sfml-audio)

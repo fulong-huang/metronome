@@ -1,4 +1,6 @@
 #include "metronome.h"
+#include <cmath>
+#include <chrono>
 
 Metronome::Metronome(int beatsPerMeasure, 
         int tempo, int downbeatPitch, int upbeatPitch){
@@ -38,10 +40,6 @@ Metronome::Metronome(int beatsPerMeasure,
     std::cout << "INIT" << std::endl;
 }
 
-int math__(){
-    return 1;
-}
-
 void Metronome::start(){
     if(this->playing){
         return;
@@ -53,10 +51,6 @@ void Metronome::start(){
 }
 
 void Metronome::stop(){
-    this->playing = false;
-}
-
-void Metronome::pause(){
     this->playing = false;
 }
 
