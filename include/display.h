@@ -1,5 +1,4 @@
 #include "SFML/Graphics.hpp"
-#include "circle.h"
 
 class Display{
 public:
@@ -8,12 +7,14 @@ public:
 	
     void draw(sf::RenderWindow& window);
     void handleMouseClick(sf::Vector2i mousePos);
+	
+	void addShape(sf::Shape*);
 
 private:
 	Display(const Display& d);
 	Display operator=(const Display& d);
     // sf::RenderWindow window;
-	std::vector<Shape *> shapes;
+	std::vector<sf::Shape *> shapes;
 
 
 	void setup();

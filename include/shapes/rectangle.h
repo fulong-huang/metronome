@@ -1,12 +1,12 @@
 #include "SFML/Graphics.hpp"
 #include "shape.h"
 
-class Circle : public Shape{
+class Rectangle : public Shape{
 public:
-	Circle(sf::Color color, int radius, int x=0, int y=0);
-	~Circle();
-	Circle(const Circle& c);
-	Circle operator=(const Circle& c);
+	Rectangle(sf::Color color, int width, int height, int x=0, int y=0);
+	~Rectangle() override;
+	Rectangle(const Rectangle& c);
+	Rectangle operator=(const Rectangle& c);
 
 	sf::Shape* get() override;
 	void setColor(sf::Color color) override;
@@ -19,9 +19,10 @@ public:
 
 	bool boundCheck(sf::Vector2i pos) override;
 private:
-	sf::CircleShape shape;
+	sf::RectangleShape shape;
 	sf::Color color;
-	int radius;
+	int width;
+	int height;
 	int posX;
 	int posY;
 

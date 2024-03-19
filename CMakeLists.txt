@@ -30,7 +30,10 @@ add_executable(${PROJECT_NAME}
     main.cpp
     src/metronome.cpp
     src/display.cpp
+	src/manager.cpp
 	src/shapes/circle.cpp
+	src/shapes/rectangle.cpp
+	
     )
 
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system sfml-audio)
