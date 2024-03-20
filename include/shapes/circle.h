@@ -3,27 +3,26 @@
 
 class Circle : public Shape{
 public:
-	Circle(sf::Color color, int radius, int x=0, int y=0);
+	Circle(sf::Color color, sf::Vector2i pos, int radius);
 	~Circle();
 	Circle(const Circle& c);
 	Circle operator=(const Circle& c);
 
 	sf::Shape* get() override;
 	void setColor(sf::Color color) override;
-	void setPosition(int x, int y) override;
+	void setPosition(sf::Vector2i pos) override;
 	void setSize(int r, int diff) override;
 
 	sf::Color getColor() override;
-	std::pair<int, int> getPosition() override;
+	sf::Vector2i getPosition() override;
 	sf::Vector2i getSize() override;
 
 	bool boundCheck(sf::Vector2i pos) override;
 private:
 	sf::CircleShape shape;
 	sf::Color color;
+	sf::Vector2i pos;
 	int radius;
-	int posX;
-	int posY;
 
 };
 

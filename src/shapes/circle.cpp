@@ -2,12 +2,12 @@
 #include <cmath>
 #include <iostream>
 
-Circle::Circle(sf::Color color, int radius, int x, int y):
-	color(color), radius(radius), posX(x), posY(y)
+Circle::Circle(sf::Color color, sf::Vector2i pos, int radius):
+	color(color), radius(radius), pos(pos)
 {
 	this->shape.setRadius(this->radius);
 	this->shape.setFillColor(this->color);
-	this->shape.setPosition(this->posX, this->posY);
+	this->shape.setPosition(this->pos.x, this->pos.y);
 };
 
 Circle::~Circle(){
@@ -15,21 +15,20 @@ Circle::~Circle(){
 };
 
 Circle::Circle(const Circle& c):
-	color(c.color), radius(c.radius), posX(c.posX), posY(c.posY)
+	color(c.color), radius(c.radius), pos(c.pos)
 {
 	this->shape.setRadius(this->radius);
 	this->shape.setFillColor(this->color);
-	this->shape.setPosition(this->posX, this->posY);
+	this->shape.setPosition(this->pos.x, this->pos.y);
 };
 
 Circle Circle::operator=(const Circle& c){
 	this->color = c.color;
 	this->radius = c.radius;
-	this->posX = c.posX;
-	this->posY = c.posY;
+	this->pos = c.pos;
 	this->shape.setRadius(this->radius);
 	this->shape.setFillColor(this->color);
-	this->shape.setPosition(this->posX, this->posY);
+	this->shape.setPosition(this->pos.x, this->pos.y);
 	return *this;
 };
 
@@ -42,10 +41,9 @@ void Circle::setColor(sf::Color color){
 	this->shape.setFillColor(color);
 };
 
-void Circle::setPosition(int x, int y) {
-	this->posX = x;
-	this->posY = y;
-	this->shape.setPosition(this->posX, this->posY);
+void Circle::setPosition(sf::Vector2i pos) {
+	this->pos = pos;
+	this->shape.setPosition(this->pos.x, this->pos.y);
 };
 
 void Circle::setSize(int r, int c){
@@ -64,16 +62,16 @@ void Circle::setSize(int r, int c){
 sf::Color Circle::getColor() {
 	return this->color;
 };
-std::pair<int, int> Circle::getPosition() {
-	return {this->posX, this->posY};
+sf::Vector2i Circle::getPosition() {
+	return this->pos;
 };
 sf::Vector2i Circle::getSize() {
 	return {this->radius * 2, this->radius * 2};
 };
 
 bool Circle::boundCheck(sf::Vector2i pos) {
-	int distX = pos.x - this->posX - this->radius;
-	int distY = pos.y - this->posY - this->radius;
+	int distX = pos.x - this->pos.x - this->radius;
+	int distY = pos.y - this->pos.y - this->radius;
 	float dist = std::sqrt(distX * distX + distY * distY);
 	return dist <= this->radius;
 };

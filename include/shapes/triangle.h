@@ -1,12 +1,14 @@
 #include "SFML/Graphics.hpp"
 #include "shape.h"
 
-class Rectangle : public Shape{
+class Triangle : public Shape{
 public:
-	Rectangle(sf::Color color, sf::Vector2i pos, int width, int height);
-	~Rectangle() override;
-	Rectangle(const Rectangle& c);
-	Rectangle operator=(const Rectangle& c);
+	Triangle(sf::Color color, 
+			sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3,
+			sf::Vector2i pos);
+	~Triangle() override;
+	Triangle(const Triangle& c);
+	Triangle operator=(const Triangle& c);
 
 	sf::Shape* get() override;
 	void setColor(sf::Color color) override;
@@ -19,11 +21,14 @@ public:
 
 	bool boundCheck(sf::Vector2i pos) override;
 private:
-	sf::RectangleShape shape;
+	void setup();
+	void findDimensions();
+	//sf::TriangleShape shape;
+	sf::ConvexShape shape;
 	sf::Color color;
+	sf::Vector2f p1, p2, p3;
 	sf::Vector2i pos;
-	int width;
-	int height;
+	int width, height;
 
 };
 

@@ -1,6 +1,7 @@
 #include "manager.h"
 
 #include "circle.h"
+#include "triangle.h"
 #include "rectangle.h"
 
 Manager::Manager(){
@@ -8,19 +9,27 @@ Manager::Manager(){
 };
 
 Manager::~Manager(){
-	for(Shape* s : buttons){
-		delete s;
+	for(int i = 0; i < END; i++){
+		if(buttons[i]){
+			delete buttons[i];
+		};
 	};
 };
 
 void Manager::setup(){
-	Rectangle* playButton = new Rectangle(sf::Color::Red, 200, 120, 20, 50);
-	buttons.push_back(playButton);
+	Rectangle* playButton = new Rectangle(sf::Color::Red, {50, 50}, 700, 50);
+	buttons[PLAY] = playButton;
 	display.addShape(playButton->get());
 
-	Circle* nextButton = new Circle(sf::Color::Red, 200, 200, 100);
-	buttons.push_back(nextButton);
-	display.addShape(nextButton->get());
+	Circle* speedUp = new Circle(sf::Color::Red, {300, 150}, 50);
+	buttons[SPEED_UP] = speedUp;
+	display.addShape(speedUp->get());
+
+	Triangle* speedDown = new Triangle(sf::Color::Red, 
+			{0, 50}, {100, 0}, {100, 100}, 
+			{100, 150});
+	buttons[SPEED_DOWN] = speedDown;
+	display.addShape(speedDown->get());
 
 	this->window.create(sf::VideoMode(800, 600), "Metronome");
 };
@@ -46,13 +55,12 @@ void Manager::run(){
 };
 
 Button Manager::findButtonClicked(sf::Vector2i mousePos){
-	for(int i = 0; i < this->buttons.size(); i++){
+	for(int i = 0; i < END; i++){
 		if(this->buttons[i]->boundCheck(mousePos)){
-			std::cout << "FOUND" << std::endl;
 			return static_cast<Button>(i);
 		};
 	};
-	return SPACE;
+	return END;
 };
 
 void Manager::handleClickEvent(Button button){
@@ -67,17 +75,27 @@ void Manager::handleClickEvent(Button button){
 				metronome.start();
 			};
 			break;
-		case NEXT:
-			if(this->buttons[NEXT]->getColor() == sf::Color::Green){
-				this->buttons[NEXT]->setColor(sf::Color::Red);
+		case SPEED_UP:
+			if(this->buttons[SPEED_UP]->getColor() == sf::Color::Green){
+				this->buttons[SPEED_UP]->setColor(sf::Color::Red);
 			}
 			else{
-				this->buttons[NEXT]->setColor(sf::Color::Green);
+				this->buttons[SPEED_UP]->setColor(sf::Color::Green);
 			};
 			break;
-		case SPACE:
+		case SPEED_DOWN:
+			if(this->buttons[SPEED_DOWN]->getColor() == sf::Color::Green){
+				this->buttons[SPEED_DOWN]->setColor(sf::Color::Red);
+			}
+			else{
+				this->buttons[SPEED_DOWN]->setColor(sf::Color::Green);
+			};
+			break;
+		case END:
 			// IGNORED
 			break;
+		default:
+			std::cout << "OOB" << std::endl;
 	};
 };
 

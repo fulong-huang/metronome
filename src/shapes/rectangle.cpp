@@ -1,12 +1,12 @@
 #include "rectangle.h"
 #include <iostream>
 
-Rectangle::Rectangle(sf::Color color, int width, int height, int x, int y):
-	color(color), width(width), height(height), posX(x), posY(y)
+Rectangle::Rectangle(sf::Color color, sf::Vector2i pos, int width, int height): 
+	color(color), pos(pos), width(width), height(height)
 {
 	this->shape.setSize({float(this->width), float(this->height)});
 	this->shape.setFillColor(this->color);
-	this->shape.setPosition(this->posX, this->posY);
+	this->shape.setPosition(this->pos.x, this->pos.y);
 };
 
 Rectangle::~Rectangle(){
@@ -14,11 +14,11 @@ Rectangle::~Rectangle(){
 };
 
 Rectangle::Rectangle(const Rectangle& c):
-	color(c.color), width(c.width), height(c.height), posX(c.posX), posY(c.posY)
+	color(c.color), pos(c.pos), width(c.width), height(c.height)
 {
 	this->shape.setSize({float(this->width), float(this->height)});
 	this->shape.setFillColor(this->color);
-	this->shape.setPosition(this->posX, this->posY);
+	this->shape.setPosition(this->pos.x, this->pos.y);
 };
 
 Rectangle Rectangle::operator=(const Rectangle
@@ -26,11 +26,10 @@ Rectangle Rectangle::operator=(const Rectangle
 	this->color = c.color;
 	this->width = c.width;
 	this->height = c.height;
-	this->posX = c.posX;
-	this->posY = c.posY;
+	this->pos = c.pos;
 	this->shape.setSize({float(this->width), float(this->height)});
 	this->shape.setFillColor(this->color);
-	this->shape.setPosition(this->posX, this->posY);
+	this->shape.setPosition(this->pos.x, this->pos.y);
 	return *this;
 };
 
@@ -43,10 +42,9 @@ void Rectangle::setColor(sf::Color color){
 	this->shape.setFillColor(color);
 };
 
-void Rectangle::setPosition(int x, int y) {
-	this->posX = x;
-	this->posY = y;
-	this->shape.setPosition(this->posX, this->posY);
+void Rectangle::setPosition(sf::Vector2i pos) {
+	this->pos = pos;
+	this->shape.setPosition(this->pos.x, this->pos.y);
 };
 
 void Rectangle::setSize(int width, int height){
@@ -58,8 +56,9 @@ void Rectangle::setSize(int width, int height){
 sf::Color Rectangle::getColor() {
 	return this->color;
 };
-std::pair<int, int> Rectangle::getPosition() {
-	return {this->posX, this->posY};
+
+sf::Vector2i Rectangle::getPosition() {
+	return this->pos;
 };
 sf::Vector2i Rectangle::getSize() {
 	return {this->width, this->height};
@@ -67,10 +66,10 @@ sf::Vector2i Rectangle::getSize() {
 
 bool Rectangle::boundCheck(sf::Vector2i pos) {
 	bool inBound = 
-		this->posX <= pos.x &&
-		this->posY <= pos.y &&
-		this->posX + this->width >= pos.x &&
-		this->posY + this->height >= pos.y;
+		this->pos.x <= pos.x &&
+		this->pos.y <= pos.y &&
+		this->pos.x + this->width >= pos.x &&
+		this->pos.y + this->height >= pos.y;
 	return inBound;
 };
 

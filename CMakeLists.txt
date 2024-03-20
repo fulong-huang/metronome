@@ -33,6 +33,7 @@ add_executable(${PROJECT_NAME}
 	src/manager.cpp
 	src/shapes/circle.cpp
 	src/shapes/rectangle.cpp
+	src/shapes/triangle.cpp
 	
     )
 

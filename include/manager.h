@@ -4,8 +4,9 @@
 
 enum Button{
 	PLAY,
-	NEXT,
-	SPACE,
+	SPEED_UP,
+	SPEED_DOWN,
+	END,
 };
 
 class Manager{
@@ -22,7 +23,7 @@ private:
 	sf::RenderWindow window;
 	Display display;
 	Metronome metronome;
-	std::vector<Shape *> buttons;
+	Shape* buttons[END];
 
 	void setup();
 	Button findButtonClicked(sf::Vector2i mousePos);
