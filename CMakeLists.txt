@@ -34,6 +34,7 @@ add_executable(${PROJECT_NAME}
 	src/shapes/circle.cpp
 	src/shapes/rectangle.cpp
 	src/shapes/triangle.cpp
+	src/shapes/text.cpp
 	
     )
 

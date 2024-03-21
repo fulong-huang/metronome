@@ -32,7 +32,7 @@ Circle Circle::operator=(const Circle& c){
 	return *this;
 };
 
-sf::Shape* Circle::get(){
+sf::Drawable* Circle::get(){
 	return &this->shape;
 };
 

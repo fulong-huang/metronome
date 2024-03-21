@@ -12,7 +12,7 @@ void Display::draw(sf::RenderWindow& window){
 	
 	window.clear();
 
-	for(sf::Shape* s : shapes){
+	for(sf::Drawable* s : drawables){
 		window.draw(*s);
 	};
 	window.display();
@@ -21,8 +21,8 @@ void Display::draw(sf::RenderWindow& window){
 void Display::handleMouseClick(sf::Vector2i mousePos){
 }
 
-void Display::addShape(sf::Shape* s){
-	this->shapes.push_back(s);
+void Display::addShape(sf::Drawable* s){
+	this->drawables.push_back(s);
 };
 
 

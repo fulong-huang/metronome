@@ -1,11 +1,13 @@
 #include "display.h"
 #include "metronome.h"
 #include "shape.h"
+#include "text.h"
 
 enum Button{
 	PLAY,
 	SPEED_UP,
 	SPEED_DOWN,
+	TEMPO,
 	END,
 };
 
@@ -23,7 +25,11 @@ private:
 	sf::RenderWindow window;
 	Display display;
 	Metronome metronome;
+	
+	// NOTE: might add display to keep track of unclickables. 
 	Shape* buttons[END];
+
+	Text* tempo;
 
 	void setup();
 	Button findButtonClicked(sf::Vector2i mousePos);

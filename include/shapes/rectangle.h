@@ -8,7 +8,7 @@ public:
 	Rectangle(const Rectangle& c);
 	Rectangle operator=(const Rectangle& c);
 
-	sf::Shape* get() override;
+	sf::Drawable* get() override;
 	void setColor(sf::Color color) override;
 	void setPosition(sf::Vector2i pos) override;
 	void setSize(int r, int diff) override;

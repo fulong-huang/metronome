@@ -1,5 +1,6 @@
 #include "manager.h"
 
+#include <iostream>
 #include "circle.h"
 #include "triangle.h"
 #include "rectangle.h"
@@ -30,6 +31,13 @@ void Manager::setup(){
 			{100, 150});
 	buttons[SPEED_DOWN] = speedDown;
 	display.addShape(speedDown->get());
+
+	tempo = new Text(sf::Color::Green, {300, 350}, "80", 
+			35, "WRONG NAME", sf::Text::Bold);
+	buttons[TEMPO] = tempo;
+	display.addShape(tempo->get());
+	
+	
 
 	this->window.create(sf::VideoMode(800, 600), "Metronome");
 };
@@ -65,7 +73,7 @@ Button Manager::findButtonClicked(sf::Vector2i mousePos){
 
 void Manager::handleClickEvent(Button button){
 	switch(button){
-		case PLAY:
+		case PLAY:{
 			if(metronome.isPlaying()){
 				this->buttons[PLAY]->setColor(sf::Color::Red);
 				metronome.stop();
@@ -75,25 +83,45 @@ void Manager::handleClickEvent(Button button){
 				metronome.start();
 			};
 			break;
-		case SPEED_UP:
-			if(this->buttons[SPEED_UP]->getColor() == sf::Color::Green){
-				this->buttons[SPEED_UP]->setColor(sf::Color::Red);
+		}
+		case SPEED_UP:{
+			std::string currTempoStr = this->tempo->getText();
+			int currTempo;
+			try{
+				currTempo = std::stoi(currTempoStr);
 			}
-			else{
-				this->buttons[SPEED_UP]->setColor(sf::Color::Green);
+			catch(std::exception e){
+				std::cout << "EXCEPTION OCCURED!!!!!!" << std::endl;
+				std::cout << e.what() << std::endl;
+				break;
 			};
+			currTempo++;
+			this->tempo->setText(std::to_string(currTempo));
+			
 			break;
-		case SPEED_DOWN:
-			if(this->buttons[SPEED_DOWN]->getColor() == sf::Color::Green){
-				this->buttons[SPEED_DOWN]->setColor(sf::Color::Red);
+		}
+		case SPEED_DOWN:{
+			std::string currTempoStr = this->tempo->getText();
+			int currTempo;
+			try{
+				currTempo = std::stoi(currTempoStr);
 			}
-			else{
-				this->buttons[SPEED_DOWN]->setColor(sf::Color::Green);
+			catch(std::exception e){
+				std::cout << "EXCEPTION OCCURED!!!!!!" << std::endl;
+				std::cout << e.what() << std::endl;
+				break;
 			};
+			if(currTempo > 20){
+				currTempo--;
+			};
+			this->tempo->setText(std::to_string(currTempo));
+			
 			break;
-		case END:
+		}
+		case END:{
 			// IGNORED
 			break;
+		}
 		default:
 			std::cout << "OOB" << std::endl;
 	};

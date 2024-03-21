@@ -8,13 +8,13 @@ public:
     void draw(sf::RenderWindow& window);
     void handleMouseClick(sf::Vector2i mousePos);
 	
-	void addShape(sf::Shape*);
+	void addShape(sf::Drawable*);
 
 private:
 	Display(const Display& d);
 	Display operator=(const Display& d);
     // sf::RenderWindow window;
-	std::vector<sf::Shape *> shapes;
+	std::vector<sf::Drawable *> drawables;
 
 
 	void setup();

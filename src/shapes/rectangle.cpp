@@ -33,7 +33,7 @@ Rectangle Rectangle::operator=(const Rectangle
 	return *this;
 };
 
-sf::Shape* Rectangle::get(){
+sf::Drawable* Rectangle::get(){
 	return &this->shape;
 };
 

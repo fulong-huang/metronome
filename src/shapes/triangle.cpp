@@ -61,7 +61,7 @@ void Triangle::findDimensions(){
 	this->height = height;
 };
 
-sf::Shape* Triangle::get(){
+sf::Drawable* Triangle::get(){
 	return &this->shape;
 };
 
