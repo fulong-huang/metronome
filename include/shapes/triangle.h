@@ -3,9 +3,8 @@
 
 class Triangle : public Shape{
 public:
-	Triangle(sf::Color color, 
-			sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3,
-			sf::Vector2i pos);
+	Triangle(sf::Color color, sf::Vector2i pos,
+			sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3);
 	~Triangle() override;
 	Triangle(const Triangle& c);
 	Triangle operator=(const Triangle& c);

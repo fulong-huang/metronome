@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Triangle::Triangle(sf::Color color, sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3, sf::Vector2i pos):
+Triangle::Triangle(sf::Color color, sf::Vector2i pos, sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3):
 	color(color), p1(p1), p2(p2), p3(p3), pos(pos)
 {
 	this->setup();

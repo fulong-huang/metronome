@@ -39,8 +39,8 @@ Text Text::operator=(const Text& t){
 
 void Text::setup(){
     std::string srcDir = std::__fs::filesystem::path(__FILE__).parent_path();
-	srcDir += "../../resources/Silkscreen";
-	if(!this->font.loadFromFile("../../resources/Silkscreen/slkscr.ttf")){
+	srcDir += "/../../resources/";
+	if(!this->font.loadFromFile(srcDir + "Silkscreen/slkscr.ttf")){
 		std::cout << "Font " << fontName  << " Failed to Load" << std::endl;
 		return;
 	};

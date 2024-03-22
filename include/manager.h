@@ -2,6 +2,7 @@
 #include "metronome.h"
 #include "shape.h"
 #include "text.h"
+#include "drawable.h"
 
 enum Button{
 	PLAY,
@@ -26,12 +27,14 @@ private:
 	Display display;
 	Metronome metronome;
 	
-	// NOTE: might add display to keep track of unclickables. 
+	std::vector<Drawable*> drawables;
 	Shape* buttons[END];
 
 	Text* tempo;
 
 	void setup();
+	void createDrawables();
+
 	Button findButtonClicked(sf::Vector2i mousePos);
 	void handleClickEvent(Button button);
 
