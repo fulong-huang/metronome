@@ -3,42 +3,48 @@
 #include <chrono>
 
 Metronome::Metronome(int beatsPerMeasure, 
-        int tempo, int downbeatPitch, int upbeatPitch){
-    sf::Int16 raw[SAMPLES];
-    double increment = (float)downbeatPitch / SAMPLES;
-    double x = 0;
-    for(unsigned i = 0; i < SAMPLES; i++){
-        raw[i] = AMPLITUDE * sin(x * TWO_PI);
-        x += increment;
-    }
-
-    if(!this->downbeatBuffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)){
-        std::cout << "Loading failed!" << std::endl;
-        return;
-    }
-    this->downbeatSound.setBuffer(this->downbeatBuffer);
-    this->downbeatSound.setLoop(true);
-
-    increment = (float)upbeatPitch / SAMPLES;
-    x = 0;
-    for(unsigned i = 0; i < SAMPLES; i++){
-        raw[i] = AMPLITUDE * sin(x * TWO_PI);
-        x += increment;
-    }
-
-    if(!this->upbeatBuffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)){
-        std::cout << "Loading failed!" << std::endl;
-        return;
-    }
-    this->upbeatSound.setBuffer(this->upbeatBuffer);
-    this->upbeatSound.setLoop(true);
-
-    this->tempo = tempo;
-    this->beatsPerMeasure = beatsPerMeasure;
-
+        int tempo, std::string downbeatNote, std::string upbeatNote):
+	beatsPerMeasure(beatsPerMeasure), tempo(tempo),
+	downbeatNote(downbeatNote), upbeatNote(upbeatNote)
+{
+	this->setDownbeatPitch(downbeatNote);
+	this->setUpbeatPitch(upbeatNote);
     this->playing = false;
-    std::cout << "INIT" << std::endl;
 }
+
+void Metronome::setDownbeatPitch(std::string noteName){
+	int pitch = this->parseNote(noteName);
+	sf::Int16 raw[SAMPLES];
+	double increment = (float)pitch/SAMPLES;
+	double x = 0;
+	for(unsigned i = 0; i < SAMPLES; i++){
+		raw[i] = AMPLITUDE * sin(x * TWO_PI);
+		x += increment;
+	};
+	if(!this->downbeatBuffer.loadFromSamples(raw,SAMPLES, 1, SAMPLE_RATE)){
+		std::cout << "DOWNBEAT LOAD FAILED!!!" << std::endl;
+		return;
+	};
+	this->downbeatSound.setBuffer(this->downbeatBuffer);
+	this->downbeatSound.setLoop(true);
+};
+
+void Metronome::setUpbeatPitch(std::string noteName){
+	int pitch = this->parseNote(noteName);
+	sf::Int16 raw[SAMPLES];
+	double increment = (float)pitch/SAMPLES;
+	double x = 0;
+	for(unsigned i = 0; i < SAMPLES; i++){
+		raw[i] = AMPLITUDE * sin(x * TWO_PI);
+		x += increment;
+	};
+	if(!this->upbeatBuffer.loadFromSamples(raw,SAMPLES, 1, SAMPLE_RATE)){
+		std::cout << "UPBEAT LOAD FAILED!!!" << std::endl;
+		return;
+	};
+	this->upbeatSound.setBuffer(this->upbeatBuffer);
+	this->upbeatSound.setLoop(true);
+};
 
 void Metronome::start(){
     if(this->playing){
@@ -85,5 +91,185 @@ void Metronome::setTempo(int tempo){
 void Metronome::setBeatsPerMeasure(int beats){
     this->beatsPerMeasure = beats;
 }
+
+int Metronome::parseNote(std::string strName){
+	// ASSUME INPUT ARE CORRECT!!!
+	int octave = strName[strName.size() - 1] - '0';
+	
+	int idx = strName[0] - 'A';
+	if(strName.size() == 3){
+		switch(strName[0]){
+			case 'A':
+				idx += 7;
+				break;
+			case 'C':
+			case 'D':
+				idx += 6;
+				break;
+			default: 
+				idx += 5;
+		};
+	};
+	
+	NoteName noteName = static_cast<NoteName>(idx);
+	float pitch = notes.at(noteName);
+	while(octave > 0){
+		pitch *= 2;
+		octave--;
+	};
+	std::cout << pitch << std::endl;
+	return pitch;
+};
+
+void Metronome::increaseDownbeatPitch(){
+	char noteName = this->downbeatNote[0];
+	char octave = this->downbeatNote[1];
+	if(this->downbeatNote.size() == 3){
+		octave = this->downbeatNote[2];
+		if(noteName == 'G'){
+			this->downbeatNote = "";
+			this->downbeatNote += 'A';
+			this->downbeatNote += octave;
+		}
+		else{
+			this->downbeatNote = "";
+			this->downbeatNote += (noteName + 1);
+			this->downbeatNote += octave;
+		};
+	}
+	else if(noteName == 'A' || noteName == 'C' || noteName == 'D' ||
+		   noteName == 'F' || noteName == 'G'){
+		this->downbeatNote = "";
+		this->downbeatNote += noteName;
+		this->downbeatNote += "s";
+		this->downbeatNote += octave;
+	}
+	else if(noteName == 'B'){
+		this->downbeatNote = "";
+		this->downbeatNote += (noteName + 1);
+		this->downbeatNote += (octave + 1);
+	}
+	else{
+		this->downbeatNote = "";
+		this->downbeatNote += (noteName + 1);
+		this->downbeatNote += octave;
+	};
+	std::cout << this->downbeatNote << std::endl;
+	this->setDownbeatPitch(this->downbeatNote);
+};
+
+void Metronome::increaseUpbeatPitch(){
+	char noteName = this->upbeatNote[0];
+	char octave = this->upbeatNote[1];
+	if(this->upbeatNote.size() == 3){
+		octave = this->upbeatNote[2];
+		if(noteName == 'G'){
+			this->upbeatNote = "";
+			this->upbeatNote += 'A';
+			this->upbeatNote += octave;
+		}
+		else{
+			this->upbeatNote = "";
+			this->upbeatNote += (noteName + 1);
+			this->upbeatNote += octave;
+		};
+	}
+	else if(noteName == 'A' || noteName == 'C' || noteName == 'D' ||
+		   noteName == 'F' || noteName == 'G'){
+		this->upbeatNote = "";
+		this->upbeatNote += noteName;
+		this->upbeatNote += "s";
+		this->upbeatNote += octave;
+	}
+	else if(noteName == 'B'){
+		this->upbeatNote = "";
+		this->upbeatNote += (noteName + 1);
+		this->upbeatNote += (octave + 1);
+	}
+	else{
+		this->upbeatNote = "";
+		this->upbeatNote += (noteName + 1);
+		this->upbeatNote += octave;
+	};
+	std::cout << this->upbeatNote << std::endl;
+	this->setUpbeatPitch(this->upbeatNote);
+};
+
+void Metronome::decreaseDownbeatPitch(){
+	char noteName = this->downbeatNote[0];
+	char octave = this->downbeatNote[1];
+	if(this->downbeatNote.size() >= 3){
+		octave = this->downbeatNote[2];
+		this->downbeatNote = "";
+		this->downbeatNote += noteName;
+		this->downbeatNote += octave;
+	}
+	else if(noteName == 'B' || noteName == 'G' ||
+			noteName == 'E' || noteName == 'D'){
+		this->downbeatNote = "";
+		this->downbeatNote += (noteName - 1);
+		this->downbeatNote += "s";
+		this->downbeatNote += octave;
+	}
+	else if(noteName == 'A'){
+		this->downbeatNote = "Gs";
+		this->downbeatNote += octave;
+	}
+	else if(noteName == 'C'){
+		if(octave == '0'){
+			std::cout << "REACH LOWEST NOTE" << std::endl;
+			return;
+		};
+		this->downbeatNote = "B";
+		this->downbeatNote += (octave - 1);
+	}
+	else{
+		this->downbeatNote = "";
+		this->downbeatNote += (noteName - 1);
+		this->downbeatNote += octave;
+	};
+	std::cout << "END, call setPitch: " << this->downbeatNote << std::endl;
+	this->setDownbeatPitch(this->downbeatNote);
+};
+
+
+void Metronome::decreaseUpbeatPitch(){
+	char noteName = this->upbeatNote[0];
+	char octave = this->upbeatNote[1];
+	if(this->upbeatNote.size() >= 3){
+		octave = this->upbeatNote[2];
+		this->upbeatNote = "";
+		this->upbeatNote += noteName;
+		this->upbeatNote += octave;
+	}
+	else if(noteName == 'B' || noteName == 'G' ||
+			noteName == 'E' || noteName == 'D'){
+		this->upbeatNote = "";
+		this->upbeatNote += (noteName - 1);
+		this->upbeatNote += "s";
+		this->upbeatNote += octave;
+	}
+	else if(noteName == 'A'){
+		this->upbeatNote = "Gs";
+		this->upbeatNote += octave;
+	}
+	else if(noteName == 'C'){
+		if(octave == '0'){
+			std::cout << "REACH LOWEST NOTE" << std::endl;
+			return;
+		};
+		this->upbeatNote = "B";
+		this->upbeatNote += (octave - 1);
+	}
+	else{
+		this->upbeatNote = "";
+		this->upbeatNote += (noteName - 1);
+		this->upbeatNote += octave;
+	};
+	std::cout << "END, call setPitch: " << this->upbeatNote << std::endl;
+	this->setUpbeatPitch(this->upbeatNote);
+};
+
+
 
 

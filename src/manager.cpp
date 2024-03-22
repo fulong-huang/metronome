@@ -21,9 +21,13 @@ Manager::~Manager(){
 };
 
 void Manager::setup(){
-	Rectangle* playButton = new Rectangle(sf::Color::Red, {50, 50}, 700, 50);
+	Circle* playButton = new Circle(sf::Color::Red, {350, 350}, 50);
 	buttons[PLAY] = playButton;
 	display.addShape(playButton->get());
+
+	Rectangle* pauseButton = new Rectangle(sf::Color(200, 200, 200), {350, 350}, 100, 100, true);
+	buttons[PAUSE] = pauseButton;
+	display.addShape(pauseButton->get());
 
 	Triangle* speedUp = new Triangle(sf::Color::Red, 
 			{500, 200},
@@ -36,9 +40,37 @@ void Manager::setup(){
 			{0, 50}, {100, 0}, {100, 100});
 	buttons[SPEED_DOWN] = speedDown;
 	display.addShape(speedDown->get());
+	
 
-	tempo = new Text(sf::Color(100, 100, 100), {340, 200}, "80", 
-			80, "Doesn't matter, it's fine", sf::Text::Bold);
+	// PITCHES
+	Triangle* upbeatInc = new Triangle(sf::Color::Cyan,
+			{250, 350},
+			{25, 0}, {50, 47}, {0, 47});
+	buttons[UPBEAT_INC] = upbeatInc;
+	display.addShape(upbeatInc->get());
+
+	Triangle* downbeatInc = new Triangle(sf::Color::Cyan,
+			{500, 350},
+			{25, 0}, {50, 47}, {0, 47});
+	buttons[DOWNBEAT_INC] = downbeatInc;
+	display.addShape(downbeatInc->get());
+
+
+	Triangle* upbeatDec = new Triangle(sf::Color::Cyan,
+			{250, 403},
+			{0, 0}, {25, 47}, {50, 0});
+	buttons[UPBEAT_DEC] = upbeatDec;
+	display.addShape(upbeatDec->get());
+
+	Triangle* downbeatDec = new Triangle(sf::Color::Cyan,
+			{500, 403},
+			{0, 0}, {25, 47}, {50, 0});
+	buttons[DOWNBEAT_DEC] = downbeatDec;
+	display.addShape(downbeatDec->get());
+
+
+
+	tempo = new Text(sf::Color(100, 100, 100), {340, 200}, "80", 80);
 	buttons[TEMPO] = tempo;
 	display.addShape(tempo->get());
 	
@@ -105,18 +137,21 @@ Button Manager::findButtonClicked(sf::Vector2i mousePos){
 void Manager::handleClickEvent(Button button){
 	switch(button){
 		case PLAY:{
-			if(metronome.isPlaying()){
-				this->buttons[PLAY]->setColor(sf::Color::Red);
-				this->buttons[TEMPO]->setColor(sf::Color(100, 100, 100));
-				metronome.stop();
-			}
-			else{
-				this->buttons[PLAY]->setColor(sf::Color::Green);
-				this->buttons[TEMPO]->setColor(sf::Color(200, 200, 200));
-				metronome.start();
-			};
+			this->buttons[PLAY]->setColor(sf::Color::Green);
+			this->buttons[TEMPO]->setColor(sf::Color(200, 200, 200));
+			this->buttons[PLAY]->setTransparency(true);
+			this->buttons[PAUSE]->setTransparency(false);
+			metronome.start();
 			break;
 		}
+		case PAUSE:{
+			this->buttons[PLAY]->setColor(sf::Color::Red);
+			this->buttons[TEMPO]->setColor(sf::Color(100, 100, 100));
+			this->buttons[PLAY]->setTransparency(false);
+			this->buttons[PAUSE]->setTransparency(true);
+			metronome.stop();
+			break;
+		};
 		case SPEED_UP:{
 			std::string currTempoStr = this->tempo->getText();
 			int currTempo;
@@ -151,6 +186,22 @@ void Manager::handleClickEvent(Button button){
 			};
 			this->tempo->setText(std::to_string(currTempo));
 			
+			break;
+		}
+		case UPBEAT_INC:{
+			this->metronome.increaseUpbeatPitch();
+			break;
+		}
+		case UPBEAT_DEC:{
+			this->metronome.decreaseUpbeatPitch();
+			break;
+		}
+		case DOWNBEAT_INC:{
+			this->metronome.increaseDownbeatPitch();
+			break;
+		}
+		case DOWNBEAT_DEC:{
+			this->metronome.decreaseDownbeatPitch();
 			break;
 		}
 		case END:{

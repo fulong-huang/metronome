@@ -3,8 +3,8 @@
 
 class Text : public Shape{
 public:
-	Text(sf::Color color, sf::Vector2i pos, std::string str, 
-			int fontSize, std::string fontName, sf::Uint32 style);
+	Text(sf::Color color, sf::Vector2i pos, std::string str, int fontSize = 50,
+			bool transparent = false, std::string fontName = "NONE", sf::Uint32 style = 0);
 	~Text() override;
 	Text(const Text& t);
 	Text operator=(const Text& t);
@@ -13,6 +13,7 @@ public:
 	void setColor(sf::Color color) override;
 	void setPosition(sf::Vector2i pos) override;
 	void setSize(int width, int height) override;
+	void setTransparency(bool transparent) override;
 
 	sf::Color getColor() override;
 	sf::Vector2i getPosition() override;
@@ -34,6 +35,7 @@ private:
 	std::string str;
 	std::string fontName;
 	int fontSize;
+	bool transparent;
 
 };
 

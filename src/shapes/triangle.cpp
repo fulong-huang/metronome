@@ -2,8 +2,9 @@
 
 #include <iostream>
 
-Triangle::Triangle(sf::Color color, sf::Vector2i pos, sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3):
-	color(color), p1(p1), p2(p2), p3(p3), pos(pos)
+Triangle::Triangle(sf::Color color, sf::Vector2i pos, 
+		sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3, bool transparent):
+	color(color), p1(p1), p2(p2), p3(p3), pos(pos), transparent(transparent)
 {
 	this->setup();
 };
@@ -24,6 +25,7 @@ Triangle Triangle::operator=(const Triangle& c){
 	this->p2 = c.p2;
 	this->p3 = c.p3;
 	this->pos = c.pos;
+	this->transparent = c.transparent;
 
 	this->setup();
 
@@ -37,7 +39,12 @@ void Triangle::setup(){
 	this->shape.setPoint(1, this->p2 + thisPos);
 	this->shape.setPoint(2, this->p3 + thisPos);
 
-	this->shape.setFillColor(this->color);
+	if(this->transparent){
+		this->shape.setFillColor(sf::Color::Transparent);
+	}
+	else{
+		this->shape.setFillColor(this->color);
+	};
 	//this->shape.setPosition(this->pos.x, this->pos.y);
 	this->findDimensions();
 };
@@ -96,10 +103,19 @@ void Triangle::setSize(int width, int height){
 	this->shape.setPoint(1, this->p2 + thisPos);
 	this->shape.setPoint(2, this->p3 + thisPos);
 
-	this->shape.setFillColor(this->color);
 	this->width = width;
 	this->height = height;
 	//this->shape.setPosition(this->pos.x, this->pos.y);
+};
+
+void Triangle::setTransparency(bool transparent){
+	this->transparent = transparent;
+	if(this->transparent){
+		this->shape.setFillColor(sf::Color::Transparent);
+	}
+	else{
+		this->shape.setFillColor(this->color);
+	}
 };
 
 sf::Color Triangle::getColor() {
@@ -114,7 +130,7 @@ sf::Vector2i Triangle::getSize() {
 
 bool Triangle::boundCheck(sf::Vector2i pos) {
 	// TODO
-	bool inBound = 
+	bool inBound = !this->transparent &&
 		this->pos.x <= pos.x &&
 		this->pos.y <= pos.y &&
 		this->pos.x + this->width >= pos.x &&
