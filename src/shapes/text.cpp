@@ -3,8 +3,8 @@
 #include <filesystem>
 
 Text::Text(sf::Color color, sf::Vector2i pos, std::string str, int fontSize,
-		bool transparent, std::string fontName, sf::Uint32 style):
-	color(color), pos(pos), str(str), fontSize(fontSize), style(style), transparent(transparent)
+		bool centered, bool transparent, std::string fontName, sf::Uint32 style):
+	color(color), pos(pos), str(str), fontSize(fontSize), style(style), transparent(transparent), centered(centered)
 {
 	this->setup();
 };
@@ -22,6 +22,7 @@ Text::Text(const Text& t){
 	this->fontName = t.fontName;
 	this->fontSize = t.fontSize;
 	this->transparent = t.transparent;
+	this->centered = t.centered;
 
 	this->setup();
 };
@@ -56,7 +57,16 @@ void Text::setup(){
 		this->text.setFillColor(this->color);
 	};
 	this->text.setStyle(style);
-	this->text.setPosition(this->pos.x, this->pos.y);
+	if(centered){
+		float width = this->text.getLocalBounds().width;
+		float height = this->text.getLocalBounds().height;
+		this->text.setPosition(
+				this->pos.x - width/2,
+				this->pos.y - height/2);
+	}
+	else{
+		this->text.setPosition(this->pos.x, this->pos.y);
+	};
 };
 
 sf::Drawable* Text::get(){

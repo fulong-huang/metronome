@@ -18,6 +18,12 @@ Manager::~Manager(){
 	for(int i = 0; i < this->drawables.size(); i++){
 		delete this->drawables[i];
 	};
+	for(int i = 0; i < positions.size(); i++){
+		delete this->positions[i];
+	};
+	for(int i = 0; i < shapes.size(); i++){
+		delete shapes[i];
+	};
 };
 
 void Manager::setup(){
@@ -68,14 +74,49 @@ void Manager::setup(){
 	buttons[DOWNBEAT_DEC] = downbeatDec;
 	display.addShape(downbeatDec->get());
 
-
-
-	tempo = new Text(sf::Color(100, 100, 100), {340, 200}, "80", 80);
+	tempo = new Text(sf::Color(100, 100, 100), {400, 225}, "80", 80);
 	buttons[TEMPO] = tempo;
 	display.addShape(tempo->get());
 	
 	this->createDrawables();
 	this->window.create(sf::VideoMode(800, 600), "Metronome");
+
+	this->createPositions();
+	this->createShapes();
+};
+
+void Manager::createPositions(){
+	for(int i = 0; i < END; i++){
+		sf::Vector2i pos = this->buttons[i]->getPosition();
+		Text* txt = new Text(
+				sf::Color::Magenta, 
+				pos,
+				std::to_string(pos.x) + "," + std::to_string(pos.y),
+				20, false
+				);
+		this->positions.push_back(txt);
+		this->display.addShape(txt->get());
+	};
+};
+
+void Manager::createShapes(){
+	Text* upbeatText = new Text(
+				sf::Color::White,
+				{275, 455},
+				"Upbeat pitch",
+				10
+			);
+	Text* downbeatText = new Text(
+				sf::Color::White,
+				{525, 455},
+				"Downbeat pitch",
+				10
+			);
+
+	this->display.addShape(upbeatText->get());
+	this->display.addShape(downbeatText->get());
+	this->shapes.push_back(upbeatText);
+	this->shapes.push_back(downbeatText);
 };
 
 void Manager::createDrawables(){
@@ -202,6 +243,9 @@ void Manager::handleClickEvent(Button button){
 		}
 		case DOWNBEAT_DEC:{
 			this->metronome.decreaseDownbeatPitch();
+			break;
+		}
+		case TEMPO:{
 			break;
 		}
 		case END:{

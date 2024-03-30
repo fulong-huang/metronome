@@ -33,12 +33,17 @@ private:
 	Metronome metronome;
 	
 	std::vector<Drawable*> drawables;
+	std::vector<Shape*> shapes;
 	Shape* buttons[END];
 
 	Text* tempo;
 
 	void setup();
 	void createDrawables();
+	void createShapes();
+
+	void createPositions();
+	std::vector<Text*> positions;
 
 	Button findButtonClicked(sf::Vector2i mousePos);
 	void handleClickEvent(Button button);
