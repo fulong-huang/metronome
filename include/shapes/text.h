@@ -22,6 +22,7 @@ public:
 	bool boundCheck(sf::Vector2i pos) override;
 	
 	void setText(std::string str);
+	void recenter();
 	std::string getText();
 private:
 	void findDimensions();

@@ -120,6 +120,19 @@ void Text::setText(std::string str){
 	this->text.setString(this->str);
 }
 
+void Text::recenter(){
+	if(centered){
+		float width = this->text.getLocalBounds().width;
+		float height = this->text.getLocalBounds().height;
+		this->text.setPosition(
+				this->pos.x - width/2,
+				this->pos.y - height/2);
+	}
+	else{
+		this->text.setPosition(this->pos.x, this->pos.y);
+	};
+};
+
 std::string Text::getText(){
 	return this->str;
 };

@@ -46,6 +46,14 @@ void Metronome::setUpbeatPitch(std::string noteName){
 	this->upbeatSound.setLoop(true);
 };
 
+std::string Metronome::getDownbeatNote(){
+	return this->downbeatNote;
+};
+
+std::string Metronome::getUpbeatNote(){
+	return this->upbeatNote;
+};
+
 void Metronome::start(){
     if(this->playing){
         return;
@@ -91,6 +99,18 @@ void Metronome::setTempo(int tempo){
 void Metronome::setBeatsPerMeasure(int beats){
     this->beatsPerMeasure = beats;
 }
+void Metronome::increaseBPM(){
+	this->beatsPerMeasure++;
+};
+void Metronome::decreaseBPM(){
+	this->beatsPerMeasure--;
+	if(this->beatsPerMeasure < 0){
+		this->beatsPerMeasure = 0;
+	};
+};
+int Metronome::getBPM(){
+	return this->beatsPerMeasure;
+};
 
 int Metronome::parseNote(std::string strName){
 	// ASSUME INPUT ARE CORRECT!!!
@@ -141,7 +161,7 @@ void Metronome::increaseDownbeatPitch(){
 		   noteName == 'F' || noteName == 'G'){
 		this->downbeatNote = "";
 		this->downbeatNote += noteName;
-		this->downbeatNote += "s";
+		this->downbeatNote += "#";
 		this->downbeatNote += octave;
 	}
 	else if(noteName == 'B'){
@@ -178,7 +198,7 @@ void Metronome::increaseUpbeatPitch(){
 		   noteName == 'F' || noteName == 'G'){
 		this->upbeatNote = "";
 		this->upbeatNote += noteName;
-		this->upbeatNote += "s";
+		this->upbeatNote += "#";
 		this->upbeatNote += octave;
 	}
 	else if(noteName == 'B'){
@@ -208,7 +228,7 @@ void Metronome::decreaseDownbeatPitch(){
 			noteName == 'E' || noteName == 'D'){
 		this->downbeatNote = "";
 		this->downbeatNote += (noteName - 1);
-		this->downbeatNote += "s";
+		this->downbeatNote += "#";
 		this->downbeatNote += octave;
 	}
 	else if(noteName == 'A'){
@@ -246,7 +266,7 @@ void Metronome::decreaseUpbeatPitch(){
 			noteName == 'E' || noteName == 'D'){
 		this->upbeatNote = "";
 		this->upbeatNote += (noteName - 1);
-		this->upbeatNote += "s";
+		this->upbeatNote += "#";
 		this->upbeatNote += octave;
 	}
 	else if(noteName == 'A'){

@@ -10,7 +10,7 @@ Manager::Manager(){
 };
 
 Manager::~Manager(){
-	for(int i = 0; i < END; i++){
+	for(int i = 0; i < END_B; i++){
 		if(this->buttons[i]){
 			delete this->buttons[i];
 		};
@@ -21,72 +21,90 @@ Manager::~Manager(){
 	for(int i = 0; i < positions.size(); i++){
 		delete this->positions[i];
 	};
-	for(int i = 0; i < shapes.size(); i++){
-		delete shapes[i];
+	for(int i = 0; i < texts.size(); i++){
+		delete texts[i];
 	};
 };
 
 void Manager::setup(){
-	Circle* playButton = new Circle(sf::Color::Red, {350, 350}, 50);
+	Circle* playButton = new Circle(sf::Color::Red, {350, 450}, 50);
 	buttons[PLAY] = playButton;
 	display.addShape(playButton->get());
 
-	Rectangle* pauseButton = new Rectangle(sf::Color(200, 200, 200), {350, 350}, 100, 100, true);
+	Rectangle* pauseButton = new Rectangle(sf::Color(200, 200, 200), {350, 450}, 100, 100, true);
 	buttons[PAUSE] = pauseButton;
 	display.addShape(pauseButton->get());
 
 	Triangle* speedUp = new Triangle(sf::Color::Red, 
-			{500, 200},
+			{500, 300},
 			{100, 50}, {0, 0}, {0, 100});
 	buttons[SPEED_UP] = speedUp;
 	display.addShape(speedUp->get());
 
 	Triangle* speedDown = new Triangle(sf::Color::Red, 
-			{200, 200},
+			{200, 300},
 			{0, 50}, {100, 0}, {100, 100});
 	buttons[SPEED_DOWN] = speedDown;
 	display.addShape(speedDown->get());
 	
+	tempo = new Text(sf::Color(100, 100, 100), {400, 325}, "80", 80);
+	buttons[TEMPO] = tempo;
+	display.addShape(tempo->get());
 
 	// PITCHES
 	Triangle* upbeatInc = new Triangle(sf::Color::Cyan,
-			{250, 350},
+			{250, 450},
 			{25, 0}, {50, 47}, {0, 47});
 	buttons[UPBEAT_INC] = upbeatInc;
 	display.addShape(upbeatInc->get());
 
 	Triangle* downbeatInc = new Triangle(sf::Color::Cyan,
-			{500, 350},
+			{500, 450},
 			{25, 0}, {50, 47}, {0, 47});
 	buttons[DOWNBEAT_INC] = downbeatInc;
 	display.addShape(downbeatInc->get());
 
 
 	Triangle* upbeatDec = new Triangle(sf::Color::Cyan,
-			{250, 403},
+			{250, 503},
 			{0, 0}, {25, 47}, {50, 0});
 	buttons[UPBEAT_DEC] = upbeatDec;
 	display.addShape(upbeatDec->get());
 
 	Triangle* downbeatDec = new Triangle(sf::Color::Cyan,
-			{500, 403},
+			{500, 503},
 			{0, 0}, {25, 47}, {50, 0});
 	buttons[DOWNBEAT_DEC] = downbeatDec;
 	display.addShape(downbeatDec->get());
-
-	tempo = new Text(sf::Color(100, 100, 100), {400, 225}, "80", 80);
-	buttons[TEMPO] = tempo;
-	display.addShape(tempo->get());
 	
+
+	Triangle* bpmInc = new Triangle(sf::Color::Red, 
+			{500, 100},
+			{100, 50}, {0, 0}, {0, 100});
+	buttons[BPM_INC] = bpmInc;
+	display.addShape(bpmInc->get());
+
+	Triangle* bpmDec = new Triangle(sf::Color::Red, 
+			{200, 100},
+			{0, 50}, {100, 0}, {100, 100});
+	buttons[BPM_DEC] = bpmDec;
+	display.addShape(bpmDec->get());
+	
+	timeSig = new Text(sf::Color(100, 100, 100), {400, 125}, "4", 80);
+	buttons[BPM] = timeSig;
+	display.addShape(timeSig->get());
+
+
+
 	this->createDrawables();
 	this->window.create(sf::VideoMode(800, 600), "Metronome");
 
 	this->createPositions();
-	this->createShapes();
+	this->createText();
 };
 
 void Manager::createPositions(){
-	for(int i = 0; i < END; i++){
+	for(int i = 0; i < END_B; i++){
 		sf::Vector2i pos = this->buttons[i]->getPosition();
 		Text* txt = new Text(
 				sf::Color::Magenta, 
@@ -99,24 +117,67 @@ void Manager::createPositions(){
 	};
 };
 
-void Manager::createShapes(){
+void Manager::createText(){
+	Text* bpmText = new Text(
+				sf::Color::White,
+				{400, 25},
+				"Beats Per Measure",
+				60
+			);
+	Text* tempoText = new Text(
+				sf::Color::White,
+				{400, 225},
+				"Tempo",
+				60
+			);
+	this->display.addShape(bpmText->get());
+	this->display.addShape(tempoText->get());
+	this->texts.push_back(bpmText);
+	this->texts.push_back(tempoText);
+
 	Text* upbeatText = new Text(
 				sf::Color::White,
-				{275, 455},
+				{275, 555},
 				"Upbeat pitch",
 				10
 			);
 	Text* downbeatText = new Text(
 				sf::Color::White,
-				{525, 455},
+				{525, 555},
 				"Downbeat pitch",
 				10
 			);
 
+	sf::Vector2i upbeatPitchPosition = this->buttons[UPBEAT_INC]->getPosition();
+	sf::Vector2i upbeatButtonPosition = this->buttons[DOWNBEAT_INC]->getSize();
+	upbeatPitchPosition.x += upbeatButtonPosition.x / 2;
+	upbeatPitchPosition.y -= upbeatButtonPosition.y / 2;
+	Text* upbeatPitchText = new Text(
+				sf::Color::Red,
+				upbeatPitchPosition,
+				"A4",
+				20
+			);
+
+	sf::Vector2i downbeatPitchPosition = this->buttons[DOWNBEAT_INC]->getPosition();
+	sf::Vector2i downbeatButtonPosition = this->buttons[DOWNBEAT_INC]->getSize();
+	downbeatPitchPosition.x += downbeatButtonPosition.x / 2;
+	downbeatPitchPosition.y -= downbeatButtonPosition.y / 2;
+	Text* downbeatPitchText = new Text(
+				sf::Color::Red,
+				downbeatPitchPosition,
+				"A5",
+				20
+			);
+
 	this->display.addShape(upbeatText->get());
 	this->display.addShape(downbeatText->get());
-	this->shapes.push_back(upbeatText);
-	this->shapes.push_back(downbeatText);
+	this->display.addShape(upbeatPitchText->get());
+	this->display.addShape(downbeatPitchText->get());
+	this->texts.push_back(upbeatText);
+	this->texts.push_back(downbeatText);
+	this->texts.push_back(upbeatPitchText);
+	this->texts.push_back(downbeatPitchText);
 };
 
 void Manager::createDrawables(){
@@ -167,15 +228,16 @@ void Manager::run(){
 };
 
 Button Manager::findButtonClicked(sf::Vector2i mousePos){
-	for(int i = 0; i < END; i++){
+	for(int i = 0; i < END_B; i++){
 		if(this->buttons[i]->boundCheck(mousePos)){
 			return static_cast<Button>(i);
 		};
 	};
-	return END;
+	return END_B;
 };
 
 void Manager::handleClickEvent(Button button){
+	std::cout << button << std::endl;
 	switch(button){
 		case PLAY:{
 			this->buttons[PLAY]->setColor(sf::Color::Green);
@@ -206,6 +268,7 @@ void Manager::handleClickEvent(Button button){
 			};
 			currTempo++;
 			this->tempo->setText(std::to_string(currTempo));
+			this->tempo->recenter();
 			this->metronome.setTempo(currTempo);
 			
 			break;
@@ -226,29 +289,52 @@ void Manager::handleClickEvent(Button button){
 				this->metronome.setTempo(currTempo);
 			};
 			this->tempo->setText(std::to_string(currTempo));
+			this->tempo->recenter();
 			
 			break;
 		}
 		case UPBEAT_INC:{
 			this->metronome.increaseUpbeatPitch();
+			this->texts[UP_PITCH_T]->setText(this->metronome.getUpbeatNote());
+			this->texts[UP_PITCH_T]->recenter();
 			break;
 		}
 		case UPBEAT_DEC:{
 			this->metronome.decreaseUpbeatPitch();
+			this->texts[UP_PITCH_T]->setText(this->metronome.getUpbeatNote());
+			this->texts[UP_PITCH_T]->recenter();
 			break;
 		}
 		case DOWNBEAT_INC:{
 			this->metronome.increaseDownbeatPitch();
+			this->texts[DOWN_PITCH_T]->setText(this->metronome.getDownbeatNote());
+			this->texts[DOWN_PITCH_T]->recenter();
 			break;
 		}
 		case DOWNBEAT_DEC:{
 			this->metronome.decreaseDownbeatPitch();
+			this->texts[DOWN_PITCH_T]->setText(this->metronome.getDownbeatNote());
+			this->texts[DOWN_PITCH_T]->recenter();
+			break;
+		}
+		case BPM_INC:{
+			this->metronome.increaseBPM();
+			this->timeSig->setText(std::to_string(this->metronome.getBPM()));
+			this->timeSig->recenter();
+			break;
+		}
+		case BPM_DEC:{
+			this->metronome.decreaseBPM();
+			this->timeSig->setText(std::to_string(this->metronome.getBPM()));
+			this->timeSig->recenter();
 			break;
 		}
 		case TEMPO:{
+			std::cout << "TEMPO" << std::endl;
+			std::cout << END_B << std::endl;
 			break;
 		}
-		case END:{
+		case END_B:{
 			// IGNORED
 			break;
 		}

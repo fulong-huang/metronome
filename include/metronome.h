@@ -40,6 +40,12 @@ public:
 
     void setTempo(int tempo);
     void setBeatsPerMeasure(int beats);
+	void increaseBPM();
+	void decreaseBPM();
+
+	std::string getDownbeatNote();
+	std::string getUpbeatNote();
+	int getBPM();
 	
 	void setDownbeatPitch(std::string noteName);
 	void setUpbeatPitch(std::string noteName);

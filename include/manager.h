@@ -4,6 +4,14 @@
 #include "text.h"
 #include "drawable.h"
 
+enum Txt{
+	UP_T,
+	DOWN_T,
+	UP_PITCH_T,
+	DOWN_PITCH_T,
+	END_T,
+	
+};
 enum Button{
 	PLAY,
 	PAUSE,
@@ -13,8 +21,11 @@ enum Button{
 	UPBEAT_DEC,
 	DOWNBEAT_INC,
 	DOWNBEAT_DEC,
+	BPM_INC,
+	BPM_DEC,
 	TEMPO,
-	END,
+	BPM,
+	END_B,
 };
 
 class Manager{
@@ -33,14 +44,16 @@ private:
 	Metronome metronome;
 	
 	std::vector<Drawable*> drawables;
-	std::vector<Shape*> shapes;
-	Shape* buttons[END];
+	std::vector<Text*> texts;
+	Shape* buttons[END_B];
 
 	Text* tempo;
+	Text* timeSig;
+
 
 	void setup();
 	void createDrawables();
-	void createShapes();
+	void createText();
 
 	void createPositions();
 	std::vector<Text*> positions;
