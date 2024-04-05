@@ -118,35 +118,24 @@ void Manager::createPositions(){
 };
 
 void Manager::createText(){
-	Text* bpmText = new Text(
-				sf::Color::White,
-				{400, 25},
-				"Beats Per Measure",
-				60
-			);
-	Text* tempoText = new Text(
-				sf::Color::White,
-				{400, 225},
-				"Tempo",
-				60
-			);
-	this->display.addShape(bpmText->get());
-	this->display.addShape(tempoText->get());
-	this->texts.push_back(bpmText);
-	this->texts.push_back(tempoText);
-
 	Text* upbeatText = new Text(
 				sf::Color::White,
 				{275, 555},
 				"Upbeat pitch",
 				10
 			);
+	this->texts.push_back(upbeatText);
+	this->display.addShape(upbeatText->get());
+
 	Text* downbeatText = new Text(
 				sf::Color::White,
 				{525, 555},
 				"Downbeat pitch",
 				10
 			);
+	this->texts.push_back(downbeatText);
+	this->display.addShape(downbeatText->get());
+
 
 	sf::Vector2i upbeatPitchPosition = this->buttons[UPBEAT_INC]->getPosition();
 	sf::Vector2i upbeatButtonPosition = this->buttons[DOWNBEAT_INC]->getSize();
@@ -158,6 +147,8 @@ void Manager::createText(){
 				"A4",
 				20
 			);
+	this->texts.push_back(upbeatPitchText);
+	this->display.addShape(upbeatPitchText->get());
 
 	sf::Vector2i downbeatPitchPosition = this->buttons[DOWNBEAT_INC]->getPosition();
 	sf::Vector2i downbeatButtonPosition = this->buttons[DOWNBEAT_INC]->getSize();
@@ -169,15 +160,27 @@ void Manager::createText(){
 				"A5",
 				20
 			);
-
-	this->display.addShape(upbeatText->get());
-	this->display.addShape(downbeatText->get());
-	this->display.addShape(upbeatPitchText->get());
 	this->display.addShape(downbeatPitchText->get());
-	this->texts.push_back(upbeatText);
-	this->texts.push_back(downbeatText);
-	this->texts.push_back(upbeatPitchText);
 	this->texts.push_back(downbeatPitchText);
+
+	Text* bpmText = new Text(
+				sf::Color::White,
+				{400, 25},
+				"Beats Per Measure",
+				60
+			);
+	this->texts.push_back(bpmText);
+	this->display.addShape(bpmText->get());
+
+	Text* tempoText = new Text(
+				sf::Color::White,
+				{400, 225},
+				"Tempo",
+				60
+			);
+	this->texts.push_back(tempoText);
+	this->display.addShape(tempoText->get());
+
 };
 
 void Manager::createDrawables(){
@@ -205,6 +208,33 @@ void Manager::createDrawables(){
 			{{60, 55}, {53, 67}, {43, 75}, {49, 65}, {50, 55}});
 	this->drawables.push_back(plusSign3);
 	this->display.addShape(plusSign3->get());
+
+
+	// BPM
+	Drawable* minusSign_BPM = new Drawable(
+			sf::Color::White, this->buttons[BPM_DEC]->getPosition(), 
+			{{20, 50}, {35, 45}, {50, 45}, {97, 50},
+			 {50, 55}, {35, 55}});
+	this->drawables.push_back(minusSign_BPM);
+	this->display.addShape(minusSign_BPM->get());
+
+	Drawable* plusSign_BPM = new Drawable(
+			sf::Color::White, this->buttons[BPM_INC]->getPosition(), 
+			{{80, 50}, {65, 45}, 
+			 {45, 45}, {3, 50},
+			 {45, 55}, {65, 55}});
+	this->drawables.push_back(plusSign_BPM);
+	this->display.addShape(plusSign_BPM->get());
+	Drawable* plusSign2_BPM = new Drawable(
+			sf::Color::White, this->buttons[BPM_INC]->getPosition(), 
+			{{60, 45}, {53, 33}, {43, 25}, {49, 35}, {50, 45}});
+	this->drawables.push_back(plusSign2_BPM);
+	this->display.addShape(plusSign2_BPM->get());
+	Drawable* plusSign3_BPM = new Drawable(
+			sf::Color::White, this->buttons[BPM_INC]->getPosition(), 
+			{{60, 55}, {53, 67}, {43, 75}, {49, 65}, {50, 55}});
+	this->drawables.push_back(plusSign3_BPM);
+	this->display.addShape(plusSign3_BPM->get());
 };
 
 void Manager::run(){
@@ -336,6 +366,7 @@ void Manager::handleClickEvent(Button button){
 		}
 		case END_B:{
 			// IGNORED
+		   std::cout << "END_B" << std::endl;
 			break;
 		}
 		default:

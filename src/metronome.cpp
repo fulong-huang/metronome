@@ -232,12 +232,12 @@ void Metronome::decreaseDownbeatPitch(){
 		this->downbeatNote += octave;
 	}
 	else if(noteName == 'A'){
-		this->downbeatNote = "Gs";
+		this->downbeatNote = "G#";
 		this->downbeatNote += octave;
 	}
 	else if(noteName == 'C'){
 		if(octave == '0'){
-			std::cout << "REACH LOWEST NOTE" << std::endl;
+			std::cout << "REACHED LOWEST NOTE" << std::endl;
 			return;
 		};
 		this->downbeatNote = "B";
@@ -248,7 +248,6 @@ void Metronome::decreaseDownbeatPitch(){
 		this->downbeatNote += (noteName - 1);
 		this->downbeatNote += octave;
 	};
-	std::cout << "END, call setPitch: " << this->downbeatNote << std::endl;
 	this->setDownbeatPitch(this->downbeatNote);
 };
 
@@ -270,12 +269,12 @@ void Metronome::decreaseUpbeatPitch(){
 		this->upbeatNote += octave;
 	}
 	else if(noteName == 'A'){
-		this->upbeatNote = "Gs";
+		this->upbeatNote = "G#";
 		this->upbeatNote += octave;
 	}
 	else if(noteName == 'C'){
 		if(octave == '0'){
-			std::cout << "REACH LOWEST NOTE" << std::endl;
+			std::cout << "REACHED LOWEST NOTE" << std::endl;
 			return;
 		};
 		this->upbeatNote = "B";
@@ -286,7 +285,6 @@ void Metronome::decreaseUpbeatPitch(){
 		this->upbeatNote += (noteName - 1);
 		this->upbeatNote += octave;
 	};
-	std::cout << "END, call setPitch: " << this->upbeatNote << std::endl;
 	this->setUpbeatPitch(this->upbeatNote);
 };
 
